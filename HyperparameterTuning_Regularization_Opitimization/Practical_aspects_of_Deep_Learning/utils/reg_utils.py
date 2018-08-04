@@ -231,9 +231,9 @@ def compute_cost(a3, Y):
     Returns:
     cost - value of the cost function
     """
-    m = Y.shape[1]
+    m = float(Y.shape[1])
     
-    logprobs = np.multiply(-np.log(a3),Y) + np.multiply(-np.log(1 - a3), 1 - Y)
+    logprobs = np.multiply(-np.log(a3), Y) + np.multiply(-np.log(1 - a3), 1 - Y)
     cost = 1./m * np.nansum(logprobs)
     
     return cost
@@ -324,13 +324,16 @@ def plot_decision_boundary(model, X, y):
     plt.scatter(X[0, :], X[1, :], c=y, cmap=plt.cm.Spectral)
     plt.show()
     
-def load_2D_dataset():
+def load_2D_dataset(pltShow):
     data = scipy.io.loadmat('datasets/data.mat')
     train_X = data['X'].T
     train_Y = data['y'].T
     test_X = data['Xval'].T
     test_Y = data['yval'].T
 
-    plt.scatter(train_X[0, :], train_X[1, :], c=train_Y, s=40, cmap=plt.cm.Spectral);
-    
+    plt.scatter(train_X[0, :], train_X[1, :], c=np.squeeze(train_Y), s=40, cmap=plt.cm.Spectral);
+    if pltShow:
+        plt.show()
+
     return train_X, train_Y, test_X, test_Y
+
