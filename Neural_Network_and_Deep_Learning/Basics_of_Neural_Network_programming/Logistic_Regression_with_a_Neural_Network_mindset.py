@@ -10,7 +10,7 @@ import h5py
 import scipy
 from PIL import Image
 from scipy import ndimage
-from lr_utils import load_dataset
+from utils.lr_utils import load_dataset
 
 
 """ data_set

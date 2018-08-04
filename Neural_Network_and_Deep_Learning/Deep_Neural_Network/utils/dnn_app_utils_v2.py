@@ -394,25 +394,25 @@ def predict(X, y, parameters):
     p -- predictions for the given dataset X
     """
     
-    m = X.shape[1]
+    m = float(X.shape[1])
     n = len(parameters) // 2 # number of layers in the neural network
-    p = np.zeros((1,m))
+    # todo: function zeros can not initialize with float
+    p = np.zeros((1, int(m)))
     
     # Forward propagation
     probas, caches = L_model_forward(X, parameters)
 
-    
     # convert probas to 0/1 predictions
     for i in range(0, probas.shape[1]):
-        if probas[0,i] > 0.5:
-            p[0,i] = 1
+        if probas[0, i] > 0.5:
+            p[0, i] = 1
         else:
-            p[0,i] = 0
+            p[0, i] = 0
     
-    #print results
-    #print ("predictions: " + str(p))
-    #print ("true labels: " + str(y))
-    print("Accuracy: "  + str(np.sum((p == y)/m)))
+    # print results
+    # print ("predictions: " + str(p))
+    # print ("true labels: " + str(y))
+    print "Accuracy: " + str(np.sum((p == y)/m))
         
     return p
 
@@ -434,3 +434,4 @@ def print_mislabeled_images(classes, X, y, p):
         plt.imshow(X[:,index].reshape(64,64,3), interpolation='nearest')
         plt.axis('off')
         plt.title("Prediction: " + classes[int(p[0,index])].decode("utf-8") + " \n Class: " + classes[y[0,index]].decode("utf-8"))
+    plt.show()
