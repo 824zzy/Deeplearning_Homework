@@ -25,9 +25,9 @@ dataset: Each dot corresponds to a position on the football field where a footba
 """
 train_X, train_Y, test_X, test_Y = load_2D_dataset(pltShow=False)
 plt.close()
+
+
 """ Non-regularized model """
-
-
 def model(X, Y, learning_rate=0.3, num_iterations=30000, print_cost=True, lambd=0, keep_prob=1):
     """
     Implements a three-layer neural network: LINEAR->RELU->LINEAR->RELU->LINEAR->SIGMOID.
@@ -236,11 +236,11 @@ def forward_propagation_with_dropout(X, parameters, keep_prob=0.5):
     Z1 = np.dot(W1, X) + b1
     A1 = relu(Z1)
 
-    D1 = np.random.rand(A1.shape[0], A1.shape[1])
+    D1 = np.random.rand(A1.shape[0], A1.shape[1])  # Step 1: initialize matrix D1 = np.random.rand(..., ...)
     # todo: trick for dropout, result matrix filled with true and false
-    D1 = D1 < keep_prob
-    A1 = A1 * D1
-    A1 = A1 / keep_prob
+    D1 = D1 < keep_prob  # Step 2: convert entries of D1 to 0 or 1 (using keep_prob as the threshold)
+    A1 = A1 * D1  # Step 3: shut down some neurons of A1
+    A1 = A1 / keep_prob  # Step 4: scale the value of neurons that haven't been shut down
     ### END CODE HERE ###
     Z2 = np.dot(W2, A1) + b2
     A2 = relu(Z2)
@@ -264,6 +264,7 @@ def forward_propagation_with_dropout(X, parameters, keep_prob=0.5):
 # A3, cache = forward_propagation_with_dropout(X_assess, parameters, keep_prob = 0.7)
 # print ("A3 = " + str(A3))
 
+
 def backward_propagation_with_dropout(X, Y, cache, keep_prob):
     """
     Implements the backward propagation of our baseline model to which we added dropout.
@@ -285,19 +286,19 @@ def backward_propagation_with_dropout(X, Y, cache, keep_prob):
     dW3 = 1. / m * np.dot(dZ3, A2.T)
     db3 = 1. / m * np.sum(dZ3, axis=1, keepdims=True)
     dA2 = np.dot(W3.T, dZ3)
-    ### START CODE HERE ### (≈ 2 lines of code)
-    dA2 = None  # Step 1: Apply mask D2 to shut down the same neurons as during the forward propagation
-    dA2 = None  # Step 2: Scale the value of neurons that haven't been shut down
-    ### END CODE HERE ###
+
+    dA2 = dA2 * D2  # Step 1: Apply mask D2 to shut down the same neurons as during the forward propagation
+    dA2 = dA2 / keep_prob  # Step 2: Scale the value of neurons that haven't been shut down
+
     dZ2 = np.multiply(dA2, np.int64(A2 > 0))
     dW2 = 1. / m * np.dot(dZ2, A1.T)
     db2 = 1. / m * np.sum(dZ2, axis=1, keepdims=True)
 
     dA1 = np.dot(W2.T, dZ2)
-    ### START CODE HERE ### (≈ 2 lines of code)
-    dA1 = None  # Step 1: Apply mask D1 to shut down the same neurons as during the forward propagation
-    dA1 = None  # Step 2: Scale the value of neurons that haven't been shut down
-    ### END CODE HERE ###
+
+    dA1 = dA1 * D1  # Step 1: Apply mask D1 to shut down the same neurons as during the forward propagation
+    dA1 = dA1 / keep_prob  # Step 2: Scale the value of neurons that haven't been shut down
+
     dZ1 = np.multiply(dA1, np.int64(A1 > 0))
     dW1 = 1. / m * np.dot(dZ1, X.T)
     db1 = 1. / m * np.sum(dZ1, axis=1, keepdims=True)
@@ -307,3 +308,29 @@ def backward_propagation_with_dropout(X, Y, cache, keep_prob):
                  "dZ1": dZ1, "dW1": dW1, "db1": db1}
 
     return gradients
+
+
+# # test case for backward propagation with dropout
+# X_assess, Y_assess, cache = backward_propagation_with_dropout_test_case()
+#
+# gradients = backward_propagation_with_dropout(X_assess, Y_assess, cache, keep_prob = 0.8)
+#
+# print ("dA1 = " + str(gradients["dA1"]))
+# print ("dA2 = " + str(gradients["dA2"]))
+
+
+# # test case and show figure for the whole model with dropout
+# parameters = model(train_X, train_Y, keep_prob=0.86, learning_rate=0.3)
+#
+# print ("On the train set:")
+# predictions_train = predict(train_X, train_Y, parameters)
+# print ("On the test set:")
+# predictions_test = predict(test_X, test_Y, parameters)
+#
+# plt.title("Model with dropout")
+# axes = plt.gca()
+# axes.set_xlim([-0.75, 0.40])
+# axes.set_ylim([-0.75, 0.65])
+# plot_decision_boundary(lambda x: predict_dec(parameters, x.T), np.squeeze(train_X), np.squeeze(train_Y))
+
+
