@@ -123,7 +123,7 @@ def forward_propagation(X, parameters):
     b2 = parameters["b2"]
     W3 = parameters["W3"]
     b3 = parameters["b3"]
-    
+
     # LINEAR -> RELU -> LINEAR -> RELU -> LINEAR -> SIGMOID
     z1 = np.dot(W1, X) + b1
     a1 = relu(z1)
@@ -249,11 +249,13 @@ def predict_dec(parameters, X):
     predictions = (a3 > 0.5)
     return predictions
 
-def load_dataset():
+def load_dataset(pltShow):
     np.random.seed(3)
-    train_X, train_Y = sklearn.datasets.make_moons(n_samples=300, noise=.2) #300 #0.2 
+    train_X, train_Y = sklearn.datasets.make_moons(n_samples=300, noise=.2)  # 300 #0.2
     # Visualize the data
-    plt.scatter(train_X[:, 0], train_X[:, 1], c=train_Y, s=40, cmap=plt.cm.Spectral);
+    if pltShow:
+        plt.scatter(train_X[:, 0], train_X[:, 1], c=train_Y, s=40, cmap=plt.cm.Spectral);
+        plt.show()
     train_X = train_X.T
     train_Y = train_Y.reshape((1, train_Y.shape[0]))
     
