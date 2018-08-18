@@ -1,0 +1,5 @@
+Lec4:Convolutional_Neural_Network/week4:Special[[:space:]]applications/Neural[[:space:]]Style[[:space:]]Transfer/pretrained-model/imagenet-vgg-verydeep-19.mat filter=lfs diff=lfs merge=lfs -text
+Lec4:Convolutional_Neural_Network/week4:Special[[:space:]]applications/Neural[[:space:]]Style[[:space:]]Transfer/pretrained-model/i filter=lfs diff=lfs merge=lfs -text
+Lec5:Sequence_models/week3:Sequence_models_and_Attention_mechanism/Trigger[[:space:]]word[[:space:]]detection/XY_dev/X_dev.npy filter=lfs diff=lfs merge=lfs -text
+Lec5:Sequence_models/week2:NLP_and_Word[[:space:]]Embedding/Emojify/data/glove.6B.50d.txt filter=lfs diff=lfs merge=lfs -text
+Lec5:Sequence_models/week3:Sequence_models_and_Attention_mechanism/Trigger[[:space:]]word[[:space:]]detection/XY_train/X.npy filter=lfs diff=lfs merge=lfs -text
